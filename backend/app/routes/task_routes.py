@@ -10,7 +10,12 @@ from app import models
 
 router = APIRouter(
     prefix="/tarefas",
-    tags=["Tarefas"]
+    tags=["Tarefas"],
+    responses={
+        401: {
+            "description": "Token inválido ou usuário não autenticado"
+        }
+    }
 )
 
 
