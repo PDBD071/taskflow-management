@@ -4,12 +4,17 @@ import app.models as models
 import app.schemas as schemas
 
 
+# ==========================
+# SERVIÇOS DE TAREFAS
+# ==========================
+
 def criar_task(
     db: Session,
     task: schemas.TaskCreate,
     usuario_id: int
 ):
 
+    # Cria uma nova tarefa associada ao usuário autenticado
     nova_task = models.Task(
         titulo=task.titulo,
         descricao=task.descricao,
@@ -29,6 +34,7 @@ def listar_tasks(
     usuario_id: int
 ):
 
+    # Retorna apenas as tarefas pertencentes ao usuário autenticado
     return db.query(models.Task).filter(
         models.Task.user_id == usuario_id
     ).all()
@@ -40,6 +46,7 @@ def buscar_task(
     usuario_id: int
 ):
 
+    # Busca uma tarefa somente se ela pertencer ao usuário autenticado
     return db.query(models.Task).filter(
         models.Task.id == task_id,
         models.Task.user_id == usuario_id
@@ -53,15 +60,19 @@ def atualizar_task(
     usuario_id: int
 ):
 
+    # Verifica se a tarefa pertence ao usuário autenticado
     tarefa = buscar_task(
         db,
         task_id,
         usuario_id
     )
 
+    # Caso a tarefa não exista ou não pertença ao usuário,
+    # retorna None para que o controller responda com erro 404
     if tarefa is None:
         return None
 
+    # Atualiza os dados da tarefa
     tarefa.titulo = task.titulo
     tarefa.descricao = task.descricao
     tarefa.concluida = task.concluida
@@ -78,12 +89,14 @@ def excluir_task(
     usuario_id: int
 ):
 
+    # Verifica se a tarefa pertence ao usuário autenticado
     task = buscar_task(
         db,
         task_id,
         usuario_id
     )
 
+    # Remove a tarefa caso ela exista
     if task:
         db.delete(task)
         db.commit()

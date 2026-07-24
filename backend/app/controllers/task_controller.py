@@ -4,12 +4,21 @@ import app.schemas as schemas
 from app.services import task_service
 
 
+# ==========================
+# CONTROLLER DE TAREFAS
+# ==========================
+# O controller recebe as requisições das rotas
+# e encaminha as operações para a camada de serviços,
+# onde estão implementadas as regras de negócio.
+
+
 def criar_task(
     db: Session,
     task: schemas.TaskCreate,
     usuario_id: int
 ):
 
+    # Encaminha a criação de uma nova tarefa
     return task_service.criar_task(
         db,
         task,
@@ -22,6 +31,7 @@ def listar_tasks(
     usuario_id: int
 ):
 
+    # Encaminha a listagem das tarefas do usuário autenticado
     return task_service.listar_tasks(
         db,
         usuario_id
@@ -34,6 +44,7 @@ def buscar_task(
     usuario_id: int
 ):
 
+    # Encaminha a busca de uma tarefa específica
     return task_service.buscar_task(
         db,
         task_id,
@@ -48,6 +59,7 @@ def atualizar_task(
     usuario_id: int
 ):
 
+    # Encaminha a atualização da tarefa
     return task_service.atualizar_task(
         db,
         task_id,
@@ -62,6 +74,7 @@ def excluir_task(
     usuario_id: int
 ):
 
+    # Encaminha a exclusão da tarefa
     return task_service.excluir_task(
         db,
         task_id,
